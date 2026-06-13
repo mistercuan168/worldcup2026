@@ -123,13 +123,13 @@ with tab_match:
         with left:
             st.subheader("Most likely scores")
             ts = pd.DataFrame(
-                [{"Score": f"{home} {s} {away}".replace("-", "–"), "Chance": p}
+                [{"Score": f"{home} {s} {away}".replace("-", "–"), "Chance": p * 100}
                  for s, p in pred.markets.top_scores],
             )
             st.dataframe(
                 ts, hide_index=True, width="stretch",
                 column_config={"Chance": st.column_config.ProgressColumn(
-                    "Chance", format="%.0f%%", min_value=0, max_value=float(ts["Chance"].max()))},
+                    "Chance", format="%.1f%%", min_value=0, max_value=float(ts["Chance"].max()))},
             )
             o1, o2 = st.columns(2)
             o1.metric("Both teams score", f"{pred.markets.p_btts:.0%}")
@@ -191,14 +191,14 @@ with tab_sim:
             conn.close()
             rows = [{
                 "Team": name_by_id.get(t, str(t)),
-                "Win group": p["win_group"], "Reach SF": p["SF"],
-                "Final": p["F"], "Win it": p["W"],
+                "Win group": p["win_group"] * 100, "Reach SF": p["SF"] * 100,
+                "Final": p["F"] * 100, "Win it": p["W"] * 100,
             } for t, p in res.items()]
             df = pd.DataFrame(rows).sort_values("Win it", ascending=False)
             st.dataframe(
                 df, hide_index=True, width="stretch",
-                column_config={c: st.column_config.ProgressColumn(c, format="%.0f%%",
-                                min_value=0, max_value=1.0)
+                column_config={c: st.column_config.ProgressColumn(c, format="%.1f%%",
+                                min_value=0, max_value=100.0)
                                for c in ["Win group", "Reach SF", "Final", "Win it"]},
             )
 

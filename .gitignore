@@ -1,0 +1,18 @@
+# Secrets — never commit
+.env
+.streamlit/secrets.toml
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+.pytest_cache/
+
+# OS
+.DS_Store
+
+# Built database (rebuilt from committed CSV on startup). Keep the CSV, drop the db.
+data/worldcup.db
+# Cached API responses
+data/cache/

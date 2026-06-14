@@ -21,6 +21,7 @@ import streamlit as st
 from src.db.models import get_connection
 from src.explain.narrative import explain
 from src.ingest.build_db import build
+from src.model.corners import expected_corners
 from src.model.predictor import build_models, predict
 from src.simulate.tournament import example_groups, simulate
 
@@ -136,6 +137,12 @@ with tab_match:
             o2.metric("Over 2.5 goals", f"{pred.markets.p_over25:.0%}")
             st.caption(f"Expected goals — {home} {pred.exp_home_goals:.2f} · "
                        f"{away} {pred.exp_away_goals:.2f}")
+
+            ch, ca, ctot = expected_corners(pred.exp_home_goals, pred.exp_away_goals)
+            st.caption(f"Estimated corners* — {home} {ch:.1f} · {away} {ca:.1f} · "
+                       f"total ~{ctot:.0f}")
+            st.caption("\\*Estimate from attacking output, not a trained model "
+                       "(no corner data in the dataset).")
 
         with right:
             st.subheader("Recent form")
